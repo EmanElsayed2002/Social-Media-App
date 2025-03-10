@@ -1,0 +1,31 @@
+{
+  "users": [
+    {
+      "id": "d7de",
+      "username": "eman elsayed",
+      "email": "emanelsayedd2024@gmail.com",
+      "password": "123456",
+      "profileImage": "assets/image.png",
+      "token": "v404rfrsyfr"
+    }
+  ],
+  "posts": [
+    {
+      "id": "576d",
+      "userId": "d7de",
+      "content": "Welcome from Eman Elsayed",
+      "image": "https://up.yimg.com/ib/th?id=OIP.EcrGsaiWVPcIYtNat1ZOygHaJt&pid=Api&rs=1&c=1&qlt=95&w=74&h=98.png",
+      "likes": 1,
+      "comments": [
+        {
+          "id": "1741642025833",
+          "userId": "d7de",
+          "userName": "eman elsayed",
+          "content": "soo cute!!"
+        }
+      ],
+      "likedBy": ["d7de"],
+      "action": "like"
+    }
+  ]
+}

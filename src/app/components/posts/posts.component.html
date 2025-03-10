@@ -1,0 +1,41 @@
+<app-loading *ngIf="isLoading"></app-loading>
+
+<div class="container mt-4" *ngIf="!isLoading">
+  <div class="row">
+    <div class="card mb-4 p-3 col-7 mx-auto">
+      <h5>Add a New Post</h5>
+      <form (submit)="addPost()">
+        <div class="mb-2">
+          <label for="content" class="form-label">Content</label>
+          <textarea
+            id="content"
+            class="form-control"
+            [(ngModel)]="newPost.content"
+            name="content"
+            rows="3"
+            required
+          ></textarea>
+        </div>
+
+        <div class="mb-2">
+          <label for="image" class="form-label">Image URL (optional)</label>
+          <input
+            type="text"
+            id="image"
+            class="form-control"
+            [(ngModel)]="newPost.image"
+            name="image"
+          />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Add Post</button>
+      </form>
+    </div>
+    <app-post
+      *ngFor="let post of posts"
+      [post]="post"
+      (usrmakeEdit)="getPosts()"
+      class="col-7 mx-auto"
+    ></app-post>
+  </div>
+</div>

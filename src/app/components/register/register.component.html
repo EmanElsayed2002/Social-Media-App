@@ -1,0 +1,121 @@
+<div *ngIf="showToast">
+  <app-toast></app-toast>
+</div>
+<div
+  class="container d-flex justify-content-center align-items-center mt-3 mb-3"
+>
+  <div
+    class="card shadow-lg p-4"
+    style="width: 100%; max-width: 500px; border-radius: 20px"
+  >
+    <form [formGroup]="newUserData" (ngSubmit)="onRegister()">
+      <div class="w-100 text-center mb-4">
+        <img
+          src="https://img.freepik.com/premium-vector/online-registration-illustration-design-concept-websites-landing-pages-other_108061-938.jpg?w=2000"
+          alt="Register"
+          class="img-fluid"
+          style="max-height: 150px"
+        />
+        <h2 class="mt-3">Create an Account</h2>
+        <p class="text-muted">Join us and start your journey</p>
+      </div>
+
+      <div class="mb-3 w-100">
+        <label for="username" class="form-label">Username</label>
+        <input
+          type="text"
+          id="username"
+          class="form-control"
+          formControlName="username"
+          required
+        />
+        <div
+          *ngIf="
+            newUserData.get('username')?.invalid &&
+            newUserData.get('username')?.touched
+          "
+        >
+          <small
+            *ngIf="newUserData.get('username')?.hasError('required')"
+            class="text-danger"
+            >Username is required.</small
+          >
+          <small
+            *ngIf="newUserData.get('username')?.hasError('minlength')"
+            class="text-danger"
+            >At least 3 characters.</small
+          >
+          <small
+            *ngIf="newUserData.get('username')?.hasError('maxlength')"
+            class="text-danger"
+            >Max 20 characters.</small
+          >
+        </div>
+      </div>
+
+      <div class="mb-3 w-100">
+        <label for="email" class="form-label">Email</label>
+        <input
+          type="email"
+          id="email"
+          class="form-control"
+          formControlName="email"
+          required
+        />
+        <div
+          *ngIf="
+            newUserData.get('email')?.invalid &&
+            newUserData.get('email')?.touched
+          "
+        >
+          <small
+            *ngIf="newUserData.get('email')?.hasError('required')"
+            class="text-danger"
+            >Email is required.</small
+          >
+          <small
+            *ngIf="newUserData.get('email')?.hasError('email')"
+            class="text-danger"
+            >Invalid email format.</small
+          >
+        </div>
+      </div>
+
+      <div class="mb-4 w-100">
+        <label for="password" class="form-label">Password</label>
+        <input
+          type="password"
+          id="password"
+          class="form-control"
+          formControlName="password"
+          required
+        />
+        <div
+          *ngIf="
+            newUserData.get('password')?.invalid &&
+            newUserData.get('password')?.touched
+          "
+        >
+          <small
+            *ngIf="newUserData.get('password')?.hasError('required')"
+            class="text-danger"
+            >Password is required.</small
+          >
+          <small
+            *ngIf="newUserData.get('password')?.hasError('minlength')"
+            class="text-danger"
+            >At least 6 characters.</small
+          >
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary w-100 py-2">Sign Up</button>
+      <div class="text-center mt-3 w-100">
+        <p class="text-muted">
+          Already have an account?
+          <a routerLink="/login" class="text-primary">Login</a>
+        </p>
+      </div>
+    </form>
+  </div>
+</div>

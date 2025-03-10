@@ -1,0 +1,151 @@
+<div>
+  <div
+    class="card mb-5 shadow-lg border-0 position-relative"
+    style="border-radius: 20px; overflow: hidden"
+  >
+    <div
+      *ngIf="post.userId === currentUserId"
+      class="position-absolute top-0 end-0 p-3"
+      style="z-index: 10"
+    >
+      <button
+        class="btn btn-warning btn-sm rounded-circle me-2 mb-3"
+        (click)="openEditModal(post)"
+      >
+        <i class="fas fa-edit"></i>
+      </button>
+      <button
+        class="btn btn-danger btn-sm rounded-circle mb-5"
+        (click)="deletePost(post.id)"
+      >
+        <i class="fas fa-trash-alt"></i>
+      </button>
+    </div>
+
+    <div
+      *ngIf="post.image; else placeholder"
+      class="overflow-hidden"
+      style="max-height: 400px"
+    >
+      <img
+        [src]="post.image"
+        alt="Post Image"
+        class="card-img-top"
+        style="
+          max-height: 400px;
+          object-fit: cover;
+          border-bottom: 5px solid #007bff;
+        "
+      />
+    </div>
+
+    <ng-template #placeholder>
+      <div
+        class="d-flex justify-content-center align-items-center text-center"
+        style="
+          height: 150px;
+          background: linear-gradient(135deg, #e9ecef, #f8f9fa);
+        "
+      >
+        <p class="text-muted fs-5">{{ post.content }}</p>
+      </div>
+    </ng-template>
+
+    <div class="card-body p-5">
+      <p class="card-text fs-4 text-dark mb-4">{{ post.content }}</p>
+
+      <div class="d-flex justify-content-between align-items-center">
+        <small class="text-muted fs-6">❤️ {{ post.likes }} Likes</small>
+
+        <div class="d-flex gap-3">
+          <button
+            class="btn btn-primary rounded-circle"
+            style="width: 45px; height: 45px"
+            (click)="toggleLike(post)"
+          >
+            <i class="fas fa-thumbs-up"></i>
+          </button>
+
+          <span class="my-auto text-primary fw-bold text-dark">{{
+            post.comments?.length || 0
+          }}</span>
+          <button
+            class="btn btn-secondary rounded-circle"
+            style="width: 45px; height: 45px"
+            (click)="toggleCommentSection(post)"
+          >
+            <i class="fas fa-comment-dots"></i>
+          </button>
+        </div>
+      </div>
+
+      <div *ngIf="showComments" class="mt-4">
+        <h5 class="fw-bold mb-3 text-primary">Comments</h5>
+
+        <div class="input-group mb-3 position-relative">
+          <input
+            type="text"
+            class="form-control rounded-pill pe-5"
+            placeholder="Write a comment..."
+            #commentInput
+          />
+          <button
+            class="btn text-primary rounded-pill iconComment"
+            (click)="addComment(post, commentInput.value)"
+          >
+            <i class="fas fa-paper-plane z-n1"></i>
+          </button>
+        </div>
+
+        <ul class="list-unstyled mt-2">
+          <li
+            *ngFor="let comment of post.comments"
+            class="p-3 mb-2 rounded bg-light"
+          >
+            <span class="fw-bold text-primary">{{ comment.userName }}:</span>
+            {{ comment.content }}
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-overlay" *ngIf="isModalOpen" (click)="closeModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <span class="close" (click)="closeModal()">&times;</span>
+    <h2>Edit Post</h2>
+
+    <label for="image">Image URL:</label>
+    <input
+      id="image"
+      type="text"
+      [(ngModel)]="editablePost.image"
+      class="form-control"
+    />
+    <img
+      *ngIf="editablePost.image"
+      [src]="editablePost.image"
+      alt="Post Image"
+      class="preview-image"
+    />
+
+    <label for="title">Title:</label>
+    <input
+      id="title"
+      type="text"
+      [(ngModel)]="editablePost.title"
+      class="form-control"
+    />
+
+    <label for="content">Content:</label>
+    <textarea
+      id="content"
+      [(ngModel)]="editablePost.content"
+      class="form-control"
+    ></textarea>
+
+    <button class="btn" (click)="saveChanges(editablePost)">
+      Save Changes
+    </button>
+  </div>
+</div>

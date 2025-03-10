@@ -1,0 +1,93 @@
+<div class="container d-flex justify-content-center align-items-center vh-100">
+  <div
+    class="card p-5 shadow-lg p-4"
+    style="width: 100%; max-width: 500px; border-radius: 20px"
+  >
+    <div class="text-center mb-4">
+      <img
+        src="https://img.freepik.com/free-vector/login-concept-illustration_114360-739.jpg"
+        alt="Login"
+        class="img-fluid mb-3"
+        style="max-height: 150px"
+      />
+      <h2 class="fw-bold">Welcome Back</h2>
+      <p class="text-muted">Sign in to continue</p>
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+      <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input
+          type="email"
+          id="email"
+          class="form-control"
+          formControlName="email"
+          placeholder="Enter your email"
+          required
+        />
+        <div
+          *ngIf="
+            loginForm.get('email')?.invalid && loginForm.get('email')?.touched
+          "
+        >
+          <small
+            *ngIf="loginForm.get('email')?.hasError('required')"
+            class="text-danger"
+            >Email is required.</small
+          >
+          <small
+            *ngIf="loginForm.get('email')?.hasError('email')"
+            class="text-danger"
+            >Enter a valid email.</small
+          >
+        </div>
+      </div>
+
+      <div class="mb-4">
+        <label for="password" class="form-label">Password</label>
+        <input
+          type="password"
+          id="password"
+          class="form-control"
+          formControlName="password"
+          placeholder="Enter your password"
+          required
+        />
+        <div
+          *ngIf="
+            loginForm.get('password')?.invalid &&
+            loginForm.get('password')?.touched
+          "
+        >
+          <small
+            *ngIf="loginForm.get('password')?.hasError('required')"
+            class="text-danger"
+            >Password is required.</small
+          >
+          <small
+            *ngIf="loginForm.get('password')?.hasError('minlength')"
+            class="text-danger"
+            >Must be at least 6 characters long.</small
+          >
+        </div>
+      </div>
+
+      <button
+        type="submit"
+        class="btn btn-primary w-100 py-2"
+        [disabled]="loginForm.invalid"
+      >
+        Login
+      </button>
+
+      <div class="text-center mt-3">
+        <p class="text-muted">
+          Don't have an account?
+          <a routerLink="/register" class="text-primary fw-bold"
+            >Register here</a
+          >
+        </p>
+      </div>
+    </form>
+  </div>
+</div>

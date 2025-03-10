@@ -1,0 +1,80 @@
+<nav class="navbar navbar-expand-lg shadow-sm bg-white py-3">
+  <div class="container">
+    <a class="navbar-brand fs-4 fw-bold text-primary">Social Media App</a>
+
+    <button
+      class="navbar-toggler border-0"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <a
+            class="nav-link text-secondary fs-5"
+            aria-current="page"
+            routerLink=""
+            routerLinkActive="text-danger fw-bold"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
+            Latest Posts
+          </a>
+        </li>
+      </ul>
+
+      <form class="d-flex align-items-center gap-3">
+        <ng-container *ngIf="!isLoggedIn()">
+          <button
+            class="btn btn-outline-primary rounded-pill px-4"
+            type="button"
+            routerLink="register"
+            routerLinkActive="text-primary fw-bold"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
+            Register
+          </button>
+          <button
+            class="btn btn-outline-primary rounded-pill px-4"
+            type="button"
+            [routerLink]="'login'"
+            routerLinkActive="text-primarybold"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
+            Login
+          </button>
+        </ng-container>
+
+        <ng-container *ngIf="isLoggedIn()">
+          <div class="d-flex align-items-center gap-2">
+            <img
+              [src]="getUserProfileImage()"
+              alt="Profile Image"
+              class="rounded-circle border"
+              style="width: 45px; height: 45px; object-fit: cover"
+            />
+            <span
+              class="btn fw-semibold text-primary cursor-pointer"
+              (click)="openUserProfile()"
+            >
+              {{ getUserName() }}
+            </span>
+            <button
+              class="btn btn-outline-danger rounded-pill px-3"
+              type="button"
+              (click)="onLogout()"
+            >
+              Logout
+            </button>
+          </div>
+        </ng-container>
+      </form>
+    </div>
+  </div>
+</nav>

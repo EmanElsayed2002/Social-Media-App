@@ -1,0 +1,31 @@
+<div
+  *ngIf="showAlert"
+  class="toast-container position-fixed top-0 start-50 p-3"
+  style="z-index: 1050"
+>
+  <div
+    class="toast align-items-center text-white bg-danger border-0 show"
+    role="alert"
+    aria-live="assertive"
+    aria-atomic="true"
+  >
+    <div class="d-flex">
+      <div class="toast-body">Please enter correct data!</div>
+      <button
+        type="button"
+        class="btn-close btn-close-white me-2 m-auto"
+        (click)="closeAlert()"
+        aria-label="Close"
+      ></button>
+    </div>
+    <div class="progress" style="height: 5px">
+      <div
+        class="progress-bar bg-light"
+        [style.width]="progress + '%'"
+        role="progressbar"
+        aria-valuemin="0"
+        aria-valuemax="100"
+      ></div>
+    </div>
+  </div>
+</div>
