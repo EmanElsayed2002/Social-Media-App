@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PostsService } from '../../Service/posts/posts.service';
 import Swal from 'sweetalert2';
+import { UserService } from '../../Service/user/user.service';
 
 @Component({
   selector: 'app-posts',
@@ -8,9 +9,27 @@ import Swal from 'sweetalert2';
   styleUrl: './posts.component.css',
 })
 export class PostsComponent implements OnInit {
+  constructor(
+    private postService: PostsService,
+    private userServie: UserService
+  ) {}
+  users: any[] = [];
+  usersImage: any[] = [];
   ngOnInit() {
     this.getCurrentUser();
     this.getPosts();
+    this.fetchUsers();
+    console.log(this.users);
+  }
+  fetchUsers() {
+    this.userServie.getUsers().subscribe((users: any) => {
+      console.log(users);
+      users.forEach((user: any) => {
+        console.log('hi' + user);
+        this.users[user.id] = user.username;
+        this.usersImage[user.id] = user.profileImage;
+      });
+    });
   }
 
   posts: any[] = [];
@@ -31,8 +50,6 @@ export class PostsComponent implements OnInit {
     console.log(this.currentUserId);
   }
   isLoading: boolean = true;
-
-  constructor(private postService: PostsService) {}
 
   getPosts() {
     this.isLoading = true;
@@ -60,8 +77,9 @@ export class PostsComponent implements OnInit {
       });
       return;
     }
+    const urlRegex =
+      /^(https?:\/\/.*\.(?:png|jpg|jpeg|gif|bmp|webp))|^(https?:\/\/.*)$/i;
 
-    const urlRegex = /^(https?:\/\/.*\.(?:png|jpg|jpeg|gif|svg|webp))$/i;
     if (image && !urlRegex.test(image)) {
       Swal.fire({
         icon: 'error',
@@ -77,7 +95,6 @@ export class PostsComponent implements OnInit {
     this.postService.addPost(this.newPost).subscribe(
       (addedPost) => {
         this.posts.unshift(addedPost);
-        // console.log(addedPost);
         this.isLoading = false;
         Swal.fire({
           icon: 'success',

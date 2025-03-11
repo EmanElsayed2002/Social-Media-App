@@ -39,24 +39,49 @@ export class RegisterComponent {
     }
 
     this.isLoading = true;
-    console.log(this.newUserData.value);
-    this.authService.register(this.newUserData.value).subscribe({
-      next: () => {
-        this.isLoading = false;
-        Swal.fire({
-          title: 'Registered Successfully!',
-          text: 'You can now login to your account.',
-          icon: 'success',
-          confirmButtonColor: '#3085d6',
-          confirmButtonText: 'Go to Login',
-        }).then(() => {
-          this.router.navigate(['/login']);
-        });
+    this.authService.checkEmailExists(this.newUserData.value.email!).subscribe({
+      next: (emailExists: any[]) => {
+        console.log(emailExists);
+        if (emailExists.length > 0) {
+          this.isLoading = false;
+          Swal.fire({
+            title: 'Email Already Registered',
+            text: 'This email is already in use. Please use a different one.',
+            icon: 'warning',
+            confirmButtonColor: '#d33',
+            confirmButtonText: 'Try Again',
+          });
+        } else {
+          this.authService.register(this.newUserData.value).subscribe({
+            next: () => {
+              this.isLoading = false;
+              Swal.fire({
+                title: 'Registered Successfully!',
+                text: 'You can now login to your account.',
+                icon: 'success',
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'Go to Login',
+              }).then(() => {
+                this.router.navigate(['/login']);
+              });
+            },
+            error: (err) => {
+              this.isLoading = false;
+              Swal.fire({
+                title: 'Registration Failed',
+                text: err.error?.message || 'Something went wrong!',
+                icon: 'error',
+                confirmButtonColor: '#d33',
+                confirmButtonText: 'Try Again',
+              });
+            },
+          });
+        }
       },
       error: (err) => {
         this.isLoading = false;
         Swal.fire({
-          title: 'Registration Failed',
+          title: 'Error',
           text: err.error?.message || 'Something went wrong!',
           icon: 'error',
           confirmButtonColor: '#d33',

@@ -27,6 +27,9 @@ export class UserService {
   getCurrentUser() {
     return JSON.parse(localStorage.getItem('user')!);
   }
+  checkEmailExists(email: string) {
+    return this.http.get<any[]>(`${this.apiURl}?email=${email}`);
+  }
 
   updateProfile(data: any) {
     const userId = this.getCurrentUser().id;

@@ -1,61 +1,63 @@
-<h2 class="mt-4 text-center text-primary fw-bold">User Profile</h2>
+<div class="vh-100">
+  <h2 class="mt-4 text-center text-primary fw-bold">User Profile</h2>
 
-<div class="card shadow-lg p-4 rounded-4 border-0">
-  <form [formGroup]="profileForm" (ngSubmit)="onUpdate()">
-    <div class="text-center mb-4">
-      <img
-        [src]="getUserProfileImage() || 'assets/image.png'"
-        alt="Profile Image"
-        class="rounded-circle mb-3 shadow-sm"
-        style="width: 150px; height: 150px; object-fit: cover"
-      />
+  <div class="card shadow-lg p-4 rounded-4 border-0">
+    <form [formGroup]="profileForm" (ngSubmit)="onUpdate()">
+      <div class="text-center mb-4">
+        <img
+          [src]="profileForm.get('profileImage')?.value || 'assets/image.png'"
+          alt="Profile Image"
+          class="rounded-circle mb-3 shadow-sm"
+          style="width: 150px; height: 150px; object-fit: cover"
+        />
+        <div class="mb-3">
+          <input
+            id="image"
+            type="text"
+            class="form-control shadow-sm"
+            placeholder="Profile Image URL"
+            formControlName="profileImage"
+          />
+        </div>
+      </div>
+
       <div class="mb-3">
+        <label for="username" class="form-label fw-bold">Username</label>
         <input
-          id="image"
+          id="username"
           type="text"
           class="form-control shadow-sm"
-          placeholder="Profile Image URL"
-          formControlName="profileImage"
+          formControlName="username"
+          placeholder="Enter your username"
         />
       </div>
-    </div>
 
-    <div class="mb-3">
-      <label for="username" class="form-label fw-bold">Username</label>
-      <input
-        id="username"
-        type="text"
-        class="form-control shadow-sm"
-        formControlName="username"
-        placeholder="Enter your username"
-      />
-    </div>
+      <div class="mb-3">
+        <label for="email" class="form-label fw-bold">Email</label>
+        <input
+          id="email"
+          type="email"
+          class="form-control shadow-sm"
+          formControlName="email"
+          placeholder="Enter your email"
+        />
+      </div>
 
-    <div class="mb-3">
-      <label for="email" class="form-label fw-bold">Email</label>
-      <input
-        id="email"
-        type="email"
-        class="form-control shadow-sm"
-        formControlName="email"
-        placeholder="Enter your email"
-      />
-    </div>
-
-    <div class="d-flex justify-content-between">
-      <button
-        type="submit"
-        class="btn btn-success px-4 py-2 rounded-pill shadow-sm"
-      >
-        Update Profile
-      </button>
-      <button
-        type="button"
-        class="btn btn-danger px-4 py-2 rounded-pill shadow-sm"
-        (click)="onDelete()"
-      >
-        Delete Account
-      </button>
-    </div>
-  </form>
+      <div class="d-flex justify-content-between">
+        <button
+          type="submit"
+          class="btn btn-success px-4 py-2 rounded-pill shadow-sm"
+        >
+          Update Profile
+        </button>
+        <button
+          type="button"
+          class="btn btn-danger px-4 py-2 rounded-pill shadow-sm"
+          (click)="onDelete()"
+        >
+          Delete Account
+        </button>
+      </div>
+    </form>
+  </div>
 </div>

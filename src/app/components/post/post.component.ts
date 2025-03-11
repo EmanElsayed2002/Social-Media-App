@@ -1,4 +1,12 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import { PostsService } from '../../Service/posts/posts.service';
 import { HttpClient } from '@angular/common/http';
 import Swal from 'sweetalert2';
@@ -8,10 +16,23 @@ import Swal from 'sweetalert2';
   templateUrl: './post.component.html',
   styleUrls: ['./post.component.css'],
 })
-export class PostComponent implements OnInit {
+export class PostComponent implements OnInit, OnChanges {
   constructor(private postService: PostsService, private http: HttpClient) {}
   ngOnInit(): void {
     this.getCurrentUser();
+    console.log(this.postUSerName);
+  }
+
+  isLiked = false;
+  @Input() postUSerName: any;
+  @Input() postUserImage: any;
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['postUSerName']) {
+      console.log('Updated post user name:', this.postUSerName);
+    }
+    if (changes['postUserImage']) {
+      console.log('Updated post user name:', this.postUserImage);
+    }
   }
   @Input() post: any;
   currentUserId: number = 0;
@@ -21,12 +42,8 @@ export class PostComponent implements OnInit {
   editablePost = { id: 0, title: '', content: '', image: '' };
   showComments: boolean = false;
   @Output() usrmakeEdit = new EventEmitter();
-
-  likePost(post: any): void {
-    post.likes++;
-  }
-  dislikePost(post: any) {
-    post.likes--;
+  isPostLiked(post: any): boolean {
+    return post.likedBy?.includes(this.currentUserId);
   }
 
   toggleLike(post: any): void {
@@ -36,18 +53,16 @@ export class PostComponent implements OnInit {
 
     const isLiked = post.likedBy.includes(userId);
 
-    const updatedLikes = isLiked ? post.likes - 1 : post.likes + 1;
-
-    const updatedLikedBy = isLiked
+    post.likedBy = isLiked
       ? post.likedBy.filter((id: any) => id !== userId)
       : [...post.likedBy, userId];
 
+    post.isLiked = !isLiked;
+
     this.postService
-      .toggleLike(post.id, userId, isLiked, updatedLikes, updatedLikedBy)
+      .toggleLike(post.id, userId, isLiked, post.likedBy.length, post.likedBy)
       .subscribe(() => {
-        post.likes = updatedLikes;
-        post.isLiked = !isLiked;
-        post.likedBy = updatedLikedBy;
+        post.likes += isLiked ? -1 : 1;
       });
   }
 

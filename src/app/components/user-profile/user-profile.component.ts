@@ -21,33 +21,45 @@ export class UserProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.user = this.userService.getCurrentUser();
+
     this.profileForm = new FormGroup({
-      username: new FormControl(),
-      profileImage: new FormControl(),
-      email: new FormControl(),
+      username: new FormControl(''),
+      profileImage: new FormControl(''),
+      email: new FormControl(''),
     });
+
+    if (this.user) {
+      this.profileForm.patchValue({
+        username: this.user.username || 'UnKnown User',
+        profileImage: this.user.profileImage || 'assets/image.png',
+        email: this.user.email || 'UnKnown Email',
+      });
+    }
   }
 
   onUpdate(): void {
-    const updatedImage = this.profileForm.get('profileImage')?.value;
+    const updatedData = this.profileForm.value;
 
     const currentUser = JSON.parse(localStorage.getItem('user') || '{}');
 
-    const updatedUser = { ...currentUser, profileImage: updatedImage };
+    const updatedUser = {
+      ...currentUser,
+      username: updatedData.username,
+      email: updatedData.email,
+      profileImage: updatedData.profileImage,
+    };
 
-    this.userService
-      .updateProfile({ profileImage: updatedImage })
-      .subscribe(() => {
-        Swal.fire({
-          icon: 'success',
-          title: 'Profile Image Updated!',
-          text: 'Your profile image has been updated successfully.',
-          timer: 2000,
-          showConfirmButton: false,
-        });
-
-        localStorage.setItem('user', JSON.stringify(updatedUser));
+    this.userService.updateProfile(updatedUser).subscribe(() => {
+      Swal.fire({
+        icon: 'success',
+        title: 'Profile Data Updated!',
+        text: 'Your profile has been updated successfully.',
+        timer: 2000,
+        showConfirmButton: false,
       });
+
+      localStorage.setItem('user', JSON.stringify(updatedUser));
+    });
   }
 
   onDelete(): void {
@@ -82,9 +94,22 @@ export class UserProfileComponent implements OnInit {
       }
     });
   }
+  getUserName() {
+    const user = this.userService.getCurrentUser();
+    this.profileForm.value.username =
+      user && user.username ? user.username : 'UnKnown User';
+  }
+
+  getUserEmail() {
+    const user = this.userService.getCurrentUser();
+    this.profileForm.value.email =
+      user && user.email ? user.email : 'UnKnown User';
+  }
 
   getUserProfileImage() {
     const user = this.userService.getCurrentUser();
-    return user && user.profileImage ? user.profileImage : 'assets/image.png';
+    this.profileForm.value.profileImage =
+      user && user.profileImage ? user.profileImage : 'assets/image.png';
+    return this.profileForm.value.profileImage;
   }
 }

@@ -2,7 +2,7 @@
 
 <div class="container mt-4" *ngIf="!isLoading">
   <div class="row">
-    <div class="card mb-4 p-3 col-7 mx-auto">
+    <div class="card mb-4 p-3 col-12 col-md-7 mx-auto">
       <h5>Add a New Post</h5>
       <form (submit)="addPost()">
         <div class="mb-2">
@@ -34,8 +34,11 @@
     <app-post
       *ngFor="let post of posts"
       [post]="post"
+      [postUserImage]="usersImage[post.userId] || './assets/image.png'"
+      [postUSerName]="users[post.userId] || 'Unknown User'"
       (usrmakeEdit)="getPosts()"
-      class="col-7 mx-auto"
+      class="col-12 col-md-7 mx-auto"
+      style="background-color: #1c1635"
     ></app-post>
   </div>
 </div>
